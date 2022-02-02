@@ -3,7 +3,19 @@ import db from "../database/connection";
 export const getUserById = (id: number) => {
   return db
     .query(`SELECT * FROM users WHERE id=$1`, [id])
-    .then(({ rows }) => rows);
+    .then(({ rows }) => rows[0]);
+};
+
+export const getUserByUsername = (username: string) => {
+  return db
+    .query(`SELECT * FROM users WHERE username=$1`, [username])
+    .then(({ rows }) => rows[0]);
+};
+
+export const getUserByEmail = (email: string) => {
+  return db
+    .query(`SELECT * FROM users WHERE email=$1`, [email])
+    .then(({ rows }) => rows[0]);
 };
 
 export const addUser = (user: any) => {
@@ -22,37 +34,4 @@ export const addUser = (user: any) => {
       userData
     )
     .then(({ rows }) => rows[0].id);
-};
-
-export const sendFriendRequest = (senderId: number, recieverId: number) => {
-  return db
-    .query(
-      `INSERT INTO friends (userid_1,userid_2) VALUES($1,$2) RETUNING id`,
-      [senderId, recieverId]
-    )
-    .then(({ rows }) => rows[0].id);
-};
-
-export const updateFriendRequest = (requestId: number, status: string) => {
-  return db
-    .query(`UPDATE friends SET status=$1 WHERE id=$2`, [status, requestId])
-    .then(() => {
-      return { id: requestId, status: "success" };
-    });
-};
-
-export const acceptFriendRequest = (requestId: number) => {
-  return db
-    .query(`UPDATE friends SET status='accepted' WHERE id=$1`, [requestId])
-    .then(() => {
-      return { id: requestId, status: "success" };
-    });
-};
-
-export const denyFriendRequest = (requestId: number) => {
-  return db
-    .query(`UPDATE friends SET status='denied' WHERE id=$1`, [requestId])
-    .then(() => {
-      return { id: requestId, status: "success" };
-    });
 };
