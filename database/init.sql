@@ -18,7 +18,8 @@ CREATE TABLE friends (
     id SERIAL PRIMARY KEY,
     userid_1 INTEGER REFERENCES users(id),
     userid_2 INTEGER REFERENCES users(id),
-    friendship_date DATE DEFAULT CURRENT_TIMESTAMP
+    friendship_date DATE DEFAULT CURRENT_TIMESTAMP,
+    active boolean DEFAULT true
 );
 
 CREATE TABLE requests (

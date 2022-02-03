@@ -23,4 +23,5 @@ function verifyAccount(req, res, next) {
     next(error);
   }
 }
-module.exports = verifyAccount;
+
+export default verifyAccount;

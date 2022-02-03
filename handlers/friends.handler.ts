@@ -5,6 +5,8 @@ import {
   getAllFriends,
   isFriendRequestExists,
   createFriendRequest,
+  getFriendByOtherId,
+  deleteFriend,
 } from "../models/friends.model";
 import ApiError from "../utils/ApiError";
 import catchAsync from "../utils/catchAsync";
@@ -45,6 +47,19 @@ const sendFriendRequest = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ status: "success", requestId: result });
 });
 
+const unFriendUser = catchAsync(async (req, res) => {
+  const { otherId } = req.body;
+  const userId = req.id;
+  if (!otherId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+  const exists = await getFriendByOtherId(userId, otherId);
+  if (!exists)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Friend request doesn't exist");
+  if (!exists.active)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Friend request is not active");
+  const result = await deleteFriend(userId, otherId);
+  res.status(httpStatus.OK).send({ status: "success", friendshipId: result });
+});
+
 const getFriendsList = catchAsync(async (req, res) => {
   const userId = req.id;
   const friendsList = await getAllFriends(userId);
@@ -56,4 +71,5 @@ export default {
   rejectRequest,
   sendFriendRequest,
   getFriendsList,
+  unFriendUser,
 };

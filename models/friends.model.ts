@@ -44,7 +44,7 @@ export const acceptFriendRequest = (requestId: number) => {
       return db
         .query(
           `INSERT INTO friends (userid_1,userid_2) VALUES($1,$2),($2,$1) RETURNING id`,
-          [rows[0].userid_1, rows[0].userid_2]
+          [rows[0].sender_id, rows[0].reciever_id]
         )
         .then(({ rows }) => rows);
     });
@@ -56,6 +56,24 @@ export const rejectFriendRequest = (requestId: number) => {
     .then(() => {
       return { id: requestId, status: "success" };
     });
+};
+
+export const deleteFriend = (userId: number, friendId: number) => {
+  return db
+    .query(
+      `UPDATE friends SET active=false WHERE userid_1=$1 AND userid_2=$2 OR userid_1=$2 AND userid_2=$1 RETURNING id`,
+      [userId, friendId]
+    )
+    .then(({ rows }) => rows[0].id);
+};
+
+export const getFriendByOtherId = (userId: number, otherId: number) => {
+  return db
+    .query(`SELECT * FROM friends WHERE userid_1=$1 AND userid_2=$2`, [
+      userId,
+      otherId,
+    ])
+    .then(({ rows }) => rows[0]);
 };
 
 export const getFriendRequestStatus = (requestId: number) => {

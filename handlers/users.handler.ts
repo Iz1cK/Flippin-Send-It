@@ -64,7 +64,6 @@ const loginUser = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Missing data!");
   const exists =
     (await getUserByUsername(username)) || (await getUserByEmail(email));
-  console.log(exists);
   if (!exists) throw new ApiError(httpStatus.BAD_REQUEST, "user doesn't exist");
   const dbPassword = exists.password;
 
