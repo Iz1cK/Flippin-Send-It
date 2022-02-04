@@ -1,6 +1,7 @@
 import express from "express";
 import userHandler from "./handlers/users.handler";
 import friendsHandler from "./handlers/friends.handler";
+import roomsHandler from "./handlers/rooms.handler";
 import checkAuth from "./middlewares/checkAuth";
 
 const router = express.Router();
@@ -22,5 +23,8 @@ router.post(
 );
 router.post("/user/friends/delete", checkAuth, friendsHandler.unFriendUser);
 router.get("/user/friends/all", checkAuth, friendsHandler.getFriendsList);
+
+router.post("/user/room/send", checkAuth, roomsHandler.postMessageToRoom);
+router.post("/user/room/all", checkAuth, roomsHandler.getAllRoomMessages);
 
 export default router;

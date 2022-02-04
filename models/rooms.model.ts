@@ -45,8 +45,9 @@ export const getRoomByParticipant = (userId: number, otherId: number) => {
       otherId,
     ])
     .then(({ rows }) => {
-      const duplicateRoomIds = rows.roomid.filter(
-        (item, index) => rows.roomid.indexOf(item) !== index
+      const mappedRoomIds = rows.map((room) => room.roomid);
+      const duplicateRoomIds = mappedRoomIds.filter(
+        (item, index) => mappedRoomIds.indexOf(item) !== index
       );
       return duplicateRoomIds[0];
     });
@@ -56,4 +57,10 @@ export const addNewRoom = (name: string) => {
   return db
     .query(`INSERT INTO rooms (name) VALUES ($1) RETURNING id`, [name])
     .then(({ rows }) => rows[0].id);
+};
+
+export const isRoomExists = (roomid: number) => {
+  return db
+    .query(`SELECT * FROM rooms WHERE id=$1`, [roomid])
+    .then(({ rows }) => !!rows[0]);
 };
