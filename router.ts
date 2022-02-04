@@ -26,5 +26,6 @@ router.get("/user/friends/all", checkAuth, friendsHandler.getFriendsList);
 
 router.post("/user/room/send", checkAuth, roomsHandler.postMessageToRoom);
 router.post("/user/room/all", checkAuth, roomsHandler.getAllRoomMessages);
+router.post("/user/room/create", checkAuth, roomsHandler.createNewRoom);
 
 export default router;
