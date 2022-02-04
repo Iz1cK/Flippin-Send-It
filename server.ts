@@ -27,9 +27,18 @@ app.use("/api", router);
 // app.use(errorConverter);
 // app.use(errorHandler);
 
-// cron.remindersJob();
-// cron.updateMissedJob();
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port} `);
+});
+const io = require("socket.io")(server, {
+  cors: { origin: "*" },
+});
+
+io.on("connection", (socket) => {
+  console.log("a user has connected");
+
+  socket.on("message", (message) => {
+    console.log(message);
+    io.emit("message", `${socket.id.substr(0, 2)} said ${message}`);
+  });
 });

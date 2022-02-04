@@ -51,11 +51,11 @@ CREATE TABLE messages (
 );
 
 INSERT INTO users (username,password,email,firstname,lastname,age,gender) VALUES
-('Kuala1','1234','durd20011@gmail.com','George','Jobran',20,'Male'),
-('Mario','1234','durd20021@gmail.com','Mario','Saliba',20,'Male'),
-('Nur','1234','durd20031@gmail.com','Nur','Awad',20,'Female'),
-('Hala','1234','durd20041@gmail.com','Hala','Khamis',20,'Female'),
-('Caster','121212','durd20051@hotmail.com','Caster','Jubran',22,'Male');
+('Kuala1','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20011@gmail.com','George','Jobran',20,'Male'),
+('Mario','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20021@gmail.com','Mario','Saliba',20,'Male'),
+('Nur','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20031@gmail.com','Nur','Awad',20,'Female'),
+('Hala','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20041@gmail.com','Hala','Khamis',20,'Female'),
+('Caster','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20051@hotmail.com','Caster','Jubran',22,'Male');
 
 INSERT INTO friends (userid_1,userid_2) VALUES
 (1,2),
@@ -74,7 +74,21 @@ INSERT INTO requests (sender_id,reciever_id) VALUES
 INSERT INTO requests (sender_id,reciever_id,status) VALUES
 (1,3,'rejected');
 
--- INSERT INTO messages (userid_1,roomid,message) VALUES
--- (1,1,'Hello, my name is George, Its nice to meet you');
+INSERT INTO rooms (name) VALUES 
+('1'),
+('2'),
+('george');
+
+INSERT INTO participants (userid,roomid) VALUES
+(1,1),
+(2,1),
+(2,2),
+(3,2);
+
+INSERT INTO messages (userid_1,roomid,message) VALUES
+(1,1,'Hello, my name is George, Its nice to meet you!'),
+(2,1,'Hello there George, My name is Mario, Pleasured to meet you!');
+
+
 
 COMMIT;
