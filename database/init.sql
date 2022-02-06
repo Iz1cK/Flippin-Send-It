@@ -89,6 +89,4 @@ INSERT INTO messages (userid_1,roomid,message) VALUES
 (1,1,'Hello, my name is George, Its nice to meet you!'),
 (2,1,'Hello there George, My name is Mario, Pleasured to meet you!');
 
-
-
 COMMIT;

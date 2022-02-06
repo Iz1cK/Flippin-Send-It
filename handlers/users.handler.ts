@@ -38,7 +38,7 @@ const createUser = catchAsync(async (req, res) => {
 
   const exists =
     !!(await getUserByUsername(username)) || !!(await getUserByEmail(email));
-  if (exists) throw new ApiError(httpStatus.BAD_REQUEST, "user already exists");
+  if (exists) throw new ApiError(httpStatus.BAD_REQUEST, "User already exists");
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
@@ -64,7 +64,7 @@ const loginUser = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Missing data!");
   const exists =
     (await getUserByUsername(username)) || (await getUserByEmail(email));
-  if (!exists) throw new ApiError(httpStatus.BAD_REQUEST, "user doesn't exist");
+  if (!exists) throw new ApiError(httpStatus.BAD_REQUEST, "User doesn't exist");
   const dbPassword = exists.password;
 
   const match = bcrypt.compareSync(password, dbPassword);

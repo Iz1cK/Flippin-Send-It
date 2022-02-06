@@ -38,7 +38,8 @@ const getAllRoomMessages = catchAsync(async (req, res) => {
 const createNewRoom = catchAsync(async (req, res) => {
   const userId = req.id;
   const { otherId, name } = req.body;
-  if (!otherId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+  if (!otherId || !name)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
   const roomId = await addNewRoom(name);
   const result1 = await addUserToRoom(userId, roomId);
   const result2 = await addUserToRoom(otherId, roomId);

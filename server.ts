@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import router from "./router";
 // import cron from "./utils/cron";
-// import { errorConverter, errorHandler } from "./middlewares/error";
+import { errorConverter, errorHandler } from "./middlewares/error";
 
 const app = express();
 const port = 4000;
@@ -24,8 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", router);
 
-// app.use(errorConverter);
-// app.use(errorHandler);
+app.use(errorConverter);
+app.use(errorHandler);
 
 const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port} `);

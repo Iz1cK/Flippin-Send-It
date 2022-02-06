@@ -21,7 +21,7 @@ const acceptRequest = catchAsync(async (req, res) => {
   if (!requestId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
   const status = await getFriendRequestStatus(requestId);
   if (status != "pending")
-    throw new ApiError(httpStatus.BAD_REQUEST, "request is not pending");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Request is not pending");
   const result = await acceptFriendRequest(requestId);
   res.send(result);
 });
@@ -31,7 +31,7 @@ const rejectRequest = catchAsync(async (req, res) => {
   if (!requestId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
   const status = await getFriendRequestStatus(requestId);
   if (status != "pending")
-    throw new ApiError(httpStatus.BAD_REQUEST, "request is not pending");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Request is not pending");
   const result = await rejectFriendRequest(requestId);
   res.send(result);
 });
