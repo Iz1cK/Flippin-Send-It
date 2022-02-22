@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
 router.get("/user/:id", userHandler.getUser);
 router.post("/user/create", userHandler.createUser);
 router.post("/user/login", userHandler.loginUser);
+router.get("/user/account/verify/:userid", userHandler.verifyUser);
 
 router.post("/user/friends/accept", checkAuth, friendsHandler.acceptRequest);
 router.post("/user/friends/reject", checkAuth, friendsHandler.rejectRequest);
