@@ -11,6 +11,7 @@ import catchAsync from "../utils/catchAsync";
 import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import moment from "moment";
 
 require("dotenv").config();
 const SECRET = process.env.JWT_SECRET;
@@ -45,13 +46,15 @@ const createUser = catchAsync(async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
+  const calculatedAge = moment().diff(age, "years");
+
   const user = {
     username,
     password: hash,
     email,
     firstname,
     lastname,
-    age,
+    age: calculatedAge,
     gender,
   };
 
