@@ -19,7 +19,14 @@ const SECRET = process.env.JWT_SECRET;
 const getUser = catchAsync(async (req, res) => {
   const id = req.params.id;
   const data = await getUserById(id);
+  delete data.password;
+  res.status(201).send(data);
+});
 
+const getCurrentUser = catchAsync(async (req, res) => {
+  const id = req.id;
+  const data = await getUserById(id);
+  delete data.password;
   res.status(201).send(data);
 });
 
@@ -115,6 +122,7 @@ const verifyUser = catchAsync(async (req, res) => {
 
 export default {
   getUser,
+  getCurrentUser,
   createUser,
   loginUser,
   verifyUser,

@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/user/:id", userHandler.getUser);
+router.get("/user", checkAuth, userHandler.getCurrentUser);
 router.post("/user/create", userHandler.createUser);
 router.post("/user/login", userHandler.loginUser);
 router.get("/user/account/verify/:userid", userHandler.verifyUser);
