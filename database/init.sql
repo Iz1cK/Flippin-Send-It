@@ -3,7 +3,7 @@ BEGIN;
 DROP TABLE IF EXISTS users,friends,messages,requests,rooms,participants CASCADE;
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    userid SERIAL PRIMARY KEY,
     username varchar(36) UNIQUE,
     password varchar(256),
     email varchar(256) UNIQUE,
@@ -15,37 +15,37 @@ CREATE TABLE users (
 );
 
 CREATE TABLE friends (
-    id SERIAL PRIMARY KEY,
-    userid_1 INTEGER REFERENCES users(id),
-    userid_2 INTEGER REFERENCES users(id),
+    friendid SERIAL PRIMARY KEY,
+    userid_1 INTEGER REFERENCES users(userid),
+    userid_2 INTEGER REFERENCES users(userid),
     friendship_date DATE DEFAULT CURRENT_TIMESTAMP,
     active boolean DEFAULT true
 );
 
 CREATE TABLE requests (
-    id SERIAL PRIMARY KEY,
-    sender_id INTEGER REFERENCES users(id),
-    reciever_id INTEGER REFERENCES users(id),
+    requestid SERIAL PRIMARY KEY,
+    sender_id INTEGER REFERENCES users(userid),
+    reciever_id INTEGER REFERENCES users(userid),
     --status(accepted/pending/rejected)
     status varchar(16) DEFAULT 'pending',
     request_date DATE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE rooms (
-    id SERIAL PRIMARY KEY,
+    roomid SERIAL PRIMARY KEY,
     name varchar(34)
 );
 
 CREATE TABLE participants(
-    id SERIAL PRIMARY KEY,
-    userid INTEGER REFERENCES users(id),
-    roomid INTEGER REFERENCES rooms(id)
+    participantid SERIAL PRIMARY KEY,
+    userid INTEGER REFERENCES users(userid),
+    roomid INTEGER REFERENCES rooms(roomid)
 );
 
 CREATE TABLE messages (
-    id SERIAL PRIMARY KEY,
-    userid_1 INTEGER REFERENCES users(id),
-    roomid INTEGER REFERENCES rooms(id),
+    messageid SERIAL PRIMARY KEY,
+    userid INTEGER REFERENCES users(userid),
+    roomid INTEGER REFERENCES rooms(roomid),
     meessage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     message text
 );
@@ -85,7 +85,7 @@ INSERT INTO participants (userid,roomid) VALUES
 (2,2),
 (3,2);
 
-INSERT INTO messages (userid_1,roomid,message) VALUES
+INSERT INTO messages (userid,roomid,message) VALUES
 (1,1,'Hello, my name is George, Its nice to meet you!'),
 (2,1,'Hello there George, My name is Mario, Pleasured to meet you!');
 

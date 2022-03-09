@@ -2,13 +2,15 @@ import db from "../database/connection";
 
 export const verifyUserById = (id: number) => {
   return db
-    .query(`UPDATE users SET verified=true WHERE id=$1 RETURNING email`, [id])
+    .query(`UPDATE users SET verified=true WHERE userid=$1 RETURNING email`, [
+      id,
+    ])
     .then(({ rows }) => rows[0]);
 };
 
 export const getUserById = (id: number) => {
   return db
-    .query(`SELECT * FROM users WHERE id=$1`, [id])
+    .query(`SELECT * FROM users WHERE userid=$1`, [id])
     .then(({ rows }) => rows[0]);
 };
 

@@ -6,6 +6,7 @@ import {
   getRoomByParticipant,
   addNewRoom,
   isRoomExists,
+  getRoomParticipants,
 } from "../models/rooms.model";
 import ApiError from "../utils/ApiError";
 import catchAsync from "../utils/catchAsync";
@@ -48,8 +49,29 @@ const createNewRoom = catchAsync(async (req, res) => {
     .send({ status: "success", roomId: roomId, results: [result1, result2] });
 });
 
+const checkIfParticipantsOfRoom = catchAsync(async (req, res) => {
+  const { participants, roomid } = req.body;
+  if (participants.length === 0 || !roomid)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+  let access = true;
+  for (let i = 0; i < participants.length; i++) {
+    const participant = participants[i];
+    access = access && (await isUserAParticipantOfRoom(+participant, roomid));
+  }
+  res.status(200).send({ status: "success", result: access });
+});
+
+const getAllRoomParticipants = catchAsync(async (req, res) => {
+  const { roomid } = req.body;
+  if (!roomid) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+  const result = await getRoomParticipants(roomid);
+  res.status(200).send({ status: "success", result: result });
+});
+
 export default {
   postMessageToRoom,
   getAllRoomMessages,
   createNewRoom,
+  checkIfParticipantsOfRoom,
+  getAllRoomParticipants,
 };

@@ -7,7 +7,7 @@ export const addMessageToRoom = (
 ) => {
   return db
     .query(
-      `INSERT INTO messages (userid_1,roomid,message) VALUES ($1,$2,$3) RETURNING id`,
+      `INSERT INTO messages (userid,roomid,message) VALUES ($1,$2,$3) RETURNING messageid`,
       [userId, roomId, message]
     )
     .then(({ rows }) => rows[0].id);
@@ -16,7 +16,7 @@ export const addMessageToRoom = (
 export const addUserToRoom = (userId: number, roomId: number) => {
   return db
     .query(
-      `INSERT INTO participants (userid,roomid) VALUES ($1,$2) RETURNING id`,
+      `INSERT INTO participants (userid,roomid) VALUES ($1,$2) RETURNING participantid`,
       [userId, roomId]
     )
     .then(({ rows }) => rows[0].id);
@@ -53,14 +53,23 @@ export const getRoomByParticipant = (userId: number, otherId: number) => {
     });
 };
 
+export const getRoomParticipants = (roomid: number) => {
+  return db
+    .query(
+      `SELECT * FROM participants INNER JOIN users ON participants.userid = users.userid WHERE roomid=$1`,
+      [roomid]
+    )
+    .then(({ rows }) => rows);
+};
+
 export const addNewRoom = (name: string) => {
   return db
-    .query(`INSERT INTO rooms (name) VALUES ($1) RETURNING id`, [name])
+    .query(`INSERT INTO rooms (name) VALUES ($1) RETURNING roomid`, [name])
     .then(({ rows }) => rows[0].id);
 };
 
 export const isRoomExists = (roomid: number) => {
   return db
-    .query(`SELECT * FROM rooms WHERE id=$1`, [roomid])
+    .query(`SELECT * FROM rooms WHERE roomid=$1`, [roomid])
     .then(({ rows }) => !!rows[0]);
 };

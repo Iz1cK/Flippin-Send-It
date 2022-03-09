@@ -19,7 +19,7 @@ export const getIncomingPendingFriendRequests = (userId: number) => {
 export const getAllFriends = (userId: number) => {
   return db
     .query(
-      `SELECT * FROM users INNER JOIN friends ON friends.userid_2 = users.id WHERE friends.userid_1 = $1`,
+      `SELECT * FROM users INNER JOIN friends ON friends.userid_2 = users.userid WHERE friends.userid_1 = $1`,
       [userId]
     )
     .then(({ rows }) => rows);
@@ -28,7 +28,7 @@ export const getAllFriends = (userId: number) => {
 export const createFriendRequest = (senderId: number, recieverId: number) => {
   return db
     .query(
-      `INSERT INTO requests (sender_id,reciever_id) VALUES($1,$2) RETURNING id`,
+      `INSERT INTO requests (sender_id,reciever_id) VALUES($1,$2) RETURNING friendid`,
       [senderId, recieverId]
     )
     .then(({ rows }) => rows[0].id);
@@ -37,13 +37,13 @@ export const createFriendRequest = (senderId: number, recieverId: number) => {
 export const acceptFriendRequest = (requestId: number) => {
   return db
     .query(
-      `UPDATE requests SET status='accepted' WHERE id=$1 RETURNING sender_id,reciever_id`,
+      `UPDATE requests SET status='accepted' WHERE requestid=$1 RETURNING sender_id,reciever_id`,
       [requestId]
     )
     .then(({ rows }) => {
       return db
         .query(
-          `INSERT INTO friends (userid_1,userid_2) VALUES($1,$2),($2,$1) RETURNING id`,
+          `INSERT INTO friends (userid_1,userid_2) VALUES($1,$2),($2,$1) RETURNING friendid`,
           [rows[0].sender_id, rows[0].reciever_id]
         )
         .then(({ rows }) => rows);
@@ -52,7 +52,9 @@ export const acceptFriendRequest = (requestId: number) => {
 
 export const rejectFriendRequest = (requestId: number) => {
   return db
-    .query(`UPDATE requests SET status='rejected' WHERE id=$1`, [requestId])
+    .query(`UPDATE requests SET status='rejected' WHERE requestid=$1`, [
+      requestId,
+    ])
     .then(() => {
       return { id: requestId, status: "success" };
     });
@@ -61,7 +63,7 @@ export const rejectFriendRequest = (requestId: number) => {
 export const deleteFriend = (userId: number, friendId: number) => {
   return db
     .query(
-      `UPDATE friends SET active=false WHERE userid_1=$1 AND userid_2=$2 OR userid_1=$2 AND userid_2=$1 RETURNING id`,
+      `UPDATE friends SET active=false WHERE userid_1=$1 AND userid_2=$2 OR userid_1=$2 AND userid_2=$1 RETURNING friendid`,
       [userId, friendId]
     )
     .then(({ rows }) => rows[0].id);
@@ -78,7 +80,7 @@ export const getFriendByOtherId = (userId: number, otherId: number) => {
 
 export const getFriendRequestStatus = (requestId: number) => {
   return db
-    .query(`SELECT status FROM requests WHERE id=$1`, [requestId])
+    .query(`SELECT status FROM requests WHERE requestid=$1`, [requestId])
     .then(({ rows }) => rows[0].status);
 };
 
