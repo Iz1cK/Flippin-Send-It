@@ -8,6 +8,7 @@ const SECRET = process.env.JWT_SECRET;
 
 function verifyAccount(req, res, next) {
   const authHeader = req.headers.authorization;
+  console.log("authheader:" + authHeader);
   if (!authHeader) {
     const error = new ApiError(400, "Authroization header required");
     next(error);

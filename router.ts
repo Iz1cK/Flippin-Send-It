@@ -22,22 +22,24 @@ router.post(
 router.post("/user/friends/delete", checkAuth, friendsHandler.unFriendUser);
 router.get("/user/friends/all", checkAuth, friendsHandler.getFriendsList);
 
-router.post("/user/room/send", checkAuth, roomsHandler.postMessageToRoom);
+router.post("/room/send", checkAuth, roomsHandler.postMessageToRoom);
 router.post(
-  "/user/room/allMessages",
+  "/room/all-messages-by-other",
   checkAuth,
   roomsHandler.getAllRoomMessages
 );
-router.post("/user/room/create", checkAuth, roomsHandler.createNewRoom);
 router.post(
-  "/user/room/allParticipants",
+  "/room/all-messages",
+  checkAuth,
+  roomsHandler.getRoomMessagesByRoomId
+);
+router.post("/room/create", checkAuth, roomsHandler.createNewRoom);
+router.post(
+  "/room/all-participants",
   checkAuth,
   roomsHandler.getAllRoomParticipants
 );
-router.post(
-  "/user/room/check",
-  checkAuth,
-  roomsHandler.checkIfParticipantsOfRoom
-);
+router.post("/room/check", checkAuth, roomsHandler.checkIfParticipantsOfRoom);
+router.post("/room/add", roomsHandler.addParticipantToRoom);
 
 export default router;
