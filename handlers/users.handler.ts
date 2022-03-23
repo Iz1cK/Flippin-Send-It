@@ -12,7 +12,6 @@ import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import moment from "moment";
-import { log } from "console";
 
 require("dotenv").config();
 const SECRET = process.env.JWT_SECRET;
@@ -26,7 +25,6 @@ const getUser = catchAsync(async (req, res) => {
 
 const getCurrentUser = catchAsync(async (req, res) => {
   const id = req.id;
-  log(id);
   const data = await getUserById(id);
   delete data.password;
   res.status(201).send(data);
