@@ -11,7 +11,8 @@ CREATE TABLE users (
     lastname varchar(36),
     verified boolean DEFAULT false,
     age INTEGER,
-    gender varchar(12)
+    gender varchar(12),
+    imageid varchar(50)
 );
 
 CREATE TABLE friends (
@@ -50,12 +51,12 @@ CREATE TABLE messages (
     message text
 );
 
-INSERT INTO users (username,password,email,firstname,lastname,age,gender) VALUES
-('Kuala1','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20011@gmail.com','George','Jobran',20,'Male'),
-('Mario','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20021@gmail.com','Mario','Saliba',20,'Male'),
-('Nur','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20031@gmail.com','Nur','Awad',20,'Female'),
-('Hala','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20041@gmail.com','Hala','Khamis',20,'Female'),
-('Caster','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20051@hotmail.com','Caster','Jubran',22,'Male');
+INSERT INTO users (username,password,email,firstname,lastname,age,gender,imageid) VALUES
+('Kuala1','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20011@gmail.com','George','Jobran',20,'Male','mariosticker'),
+('Mario','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20021@gmail.com','Mario','Saliba',20,'Male','mariosticker'),
+('Nur','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20031@gmail.com','Nur','Awad',20,'Female','mariosticker'),
+('Hala','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20041@gmail.com','Hala','Khamis',20,'Female','mariosticker'),
+('Caster','$2a$10$4d0ons8ELFLe4Blw67vVMujjLefWnmFfB7tjz.ZLOw9CC2ywS.aNa','durd20051@hotmail.com','Caster','Jubran',22,'Male','mariosticker');
 
 INSERT INTO friends (userid_1,userid_2) VALUES
 (1,2),

@@ -12,6 +12,7 @@ import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import moment from "moment";
+import { uploadFile } from "../utils/s3";
 
 require("dotenv").config();
 const SECRET = process.env.JWT_SECRET;
@@ -31,9 +32,8 @@ const getCurrentUser = catchAsync(async (req, res) => {
 });
 
 const createUser = catchAsync(async (req, res) => {
-  const { username, password, email, firstname, lastname, age, gender } =
+  const { username, password, email, firstname, lastname, age, gender, image } =
     req.body;
-
   if (
     !username ||
     !password ||
@@ -41,7 +41,8 @@ const createUser = catchAsync(async (req, res) => {
     !firstname ||
     !lastname ||
     !age ||
-    !gender
+    !gender ||
+    !image
   ) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Missing data!");
   }
@@ -63,6 +64,7 @@ const createUser = catchAsync(async (req, res) => {
     lastname,
     age: calculatedAge,
     gender,
+    imageid: image,
   };
 
   const userId = await addUser(user);
@@ -78,7 +80,7 @@ const createUser = catchAsync(async (req, res) => {
            `,
   };
 
-  sendMail(mailOptions);
+  // sendMail(mailOptions);
 
   res.status(httpStatus.OK).send({ userid: userId, status: "success" });
 });

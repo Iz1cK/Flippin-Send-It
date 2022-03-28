@@ -13,6 +13,7 @@ declare global {
     interface Request {
       user: any;
       body: any;
+      file: any;
     }
   }
 }

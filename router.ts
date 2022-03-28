@@ -1,10 +1,31 @@
+import httpStatus from "http-status";
 import express from "express";
 import userHandler from "./handlers/users.handler";
 import friendsHandler from "./handlers/friends.handler";
 import roomsHandler from "./handlers/rooms.handler";
 import checkAuth from "./middlewares/checkAuth";
+import { Request, Response } from "express";
+import multer from "multer";
+import { uploadFile, getFile } from "./utils/s3";
+const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
+
+router.get("/images/:key", (req: any, res) => {
+  const { key } = req.params;
+  console.log(key);
+  const readStream = getFile(key);
+  res.setHeader("Content-Type", "image/png");
+  readStream.pipe(res);
+});
+
+router.post("/images", upload.single("image"), async (req: any, res) => {
+  const file = req.file;
+  console.log(file);
+  const fileData: any = await uploadFile(file);
+  console.log(fileData);
+  res.status(httpStatus.OK).send({ key: fileData.key });
+});
 
 router.get("/user/:id", userHandler.getUser);
 router.get("/user", checkAuth, userHandler.getCurrentUser);

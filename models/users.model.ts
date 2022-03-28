@@ -35,11 +35,12 @@ export const addUser = (user: any) => {
     user.lastname,
     user.age,
     user.gender,
+    user.imageid,
   ];
   return db
     .query(
-      `INSERT INTO users (username,password,email,firstname,lastname,age,gender) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
+      `INSERT INTO users (username,password,email,firstname,lastname,age,gender,imageid) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING userid`,
       userData
     )
-    .then(({ rows }) => rows[0].id);
+    .then(({ rows }) => rows[0].userid);
 };
