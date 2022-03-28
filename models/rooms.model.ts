@@ -73,3 +73,9 @@ export const isRoomExists = (roomid: number) => {
     .query(`SELECT * FROM rooms WHERE roomid=$1`, [roomid])
     .then(({ rows }) => !!rows[0]);
 };
+
+export const getRoomNameById = (roomid: number) => {
+  return db
+    .query(`SELECT name FROM rooms WHERE roomid = $1`, [roomid])
+    .then(({ rows }) => rows[0]);
+};

@@ -41,5 +41,6 @@ router.post(
 );
 router.post("/room/check", checkAuth, roomsHandler.checkIfParticipantsOfRoom);
 router.post("/room/add", roomsHandler.addParticipantToRoom);
+router.post("/room", checkAuth, roomsHandler.getRoomInfo);
 
 export default router;

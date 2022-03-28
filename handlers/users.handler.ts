@@ -94,7 +94,10 @@ const loginUser = catchAsync(async (req, res) => {
 
   const match = bcrypt.compareSync(password, dbPassword);
   if (!match) throw new ApiError(401, "Wrong password");
-  const token = jwt.sign({ username: exists.username, id: exists.id }, SECRET);
+  const token = jwt.sign(
+    { username: exists.username, id: exists.userid },
+    SECRET
+  );
   const response = {
     username: exists.username,
     access_token: token,

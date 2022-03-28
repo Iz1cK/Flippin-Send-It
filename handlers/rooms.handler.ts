@@ -7,6 +7,7 @@ import {
   addNewRoom,
   isRoomExists,
   getRoomParticipants,
+  getRoomNameById,
 } from "../models/rooms.model";
 import ApiError from "../utils/ApiError";
 import catchAsync from "../utils/catchAsync";
@@ -15,7 +16,6 @@ import httpStatus from "http-status";
 const postMessageToRoom = catchAsync(async (req, res) => {
   const userId = req.id;
   const { roomId, message } = req.body;
-  console.log("userid:" + userId);
   if (!roomId || !message)
     throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
   if (!(await isRoomExists(roomId)))
@@ -40,7 +40,6 @@ const getAllRoomMessages = catchAsync(async (req, res) => {
 const getRoomMessagesByRoomId = catchAsync(async (req, res) => {
   const userId = req.id;
   const { roomId } = req.body;
-  console.log(userId);
   if (!roomId)
     throw new ApiError(httpStatus.BAD_REQUEST, "No existing room for this id");
   if (!(await isUserAParticipantOfRoom(userId, roomId)))
@@ -80,7 +79,6 @@ const checkIfParticipantsOfRoom = catchAsync(async (req, res) => {
 const getAllRoomParticipants = catchAsync(async (req, res) => {
   const userId = req.id;
   const { roomId } = req.body;
-  console.log("userid:" + userId);
   if (!roomId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
   const result = await getRoomParticipants(roomId);
   res.status(200).send({ status: "success", result: result, userId: userId });
@@ -94,6 +92,14 @@ const addParticipantToRoom = catchAsync(async (req, res) => {
   res.status(200).send({ status: "success", result: result });
 });
 
+const getRoomInfo = catchAsync(async (req, res) => {
+  const { roomId } = req.body;
+  if (!roomId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+
+  const result = await getRoomNameById(roomId);
+  res.status(200).send({ status: "success", result: result });
+});
+
 export default {
   postMessageToRoom,
   getAllRoomMessages,
@@ -102,4 +108,12 @@ export default {
   getAllRoomParticipants,
   getRoomMessagesByRoomId,
   addParticipantToRoom,
+  getRoomInfo,
 };
+
+// JSON - java script object notation
+let x = {
+  name: "George",
+  age: 20,
+};
+const g = ["hi", 0, true];
