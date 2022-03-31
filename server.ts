@@ -6,7 +6,7 @@ import router from "./router";
 import { errorConverter, errorHandler } from "./middlewares/error";
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 declare global {
   namespace Express {
