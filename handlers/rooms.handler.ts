@@ -110,10 +110,3 @@ export default {
   addParticipantToRoom,
   getRoomInfo,
 };
-
-// JSON - java script object notation
-let x = {
-  name: "George",
-  age: 20,
-};
-const g = ["hi", 0, true];
