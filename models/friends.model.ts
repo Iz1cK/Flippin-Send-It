@@ -78,6 +78,15 @@ export const getFriendByOtherId = (userId: number, otherId: number) => {
     .then(({ rows }) => rows[0]);
 };
 
+export const checkIfOtherIsFriend = (userId: number, otherId: number) => {
+  return db
+    .query(`SELECT * FROM friends WHERE userid_1=$1 AND userid_2=$2`, [
+      userId,
+      otherId,
+    ])
+    .then(({ rows }) => !!rows[0]);
+};
+
 export const getFriendRequestStatus = (requestId: number) => {
   return db
     .query(`SELECT status FROM requests WHERE requestid=$1`, [requestId])
