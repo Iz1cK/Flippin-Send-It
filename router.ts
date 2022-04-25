@@ -40,7 +40,7 @@ router.post(
   checkAuth,
   friendsHandler.sendFriendRequest
 );
-// router.post("/user/friends/check", checkAuth, friendsHandler.checkFriend);
+router.post("/user/friends/check", checkAuth, friendsHandler.checkIfFriends);
 router.post("/user/friends/delete", checkAuth, friendsHandler.unFriendUser);
 router.get("/user/friends/all", checkAuth, friendsHandler.getFriendsList);
 

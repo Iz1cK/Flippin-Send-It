@@ -7,6 +7,7 @@ import {
   createFriendRequest,
   getFriendByOtherId,
   deleteFriend,
+  checkIfOtherIsFriend,
 } from "../models/friends.model";
 import ApiError from "../utils/ApiError";
 import catchAsync from "../utils/catchAsync";
@@ -66,10 +67,18 @@ const getFriendsList = catchAsync(async (req, res) => {
   res.status(200).send(friendsList);
 });
 
+const checkIfFriends = catchAsync(async (req, res) => {
+  const userid = req.id;
+  const { otherid } = req.body;
+  const result = await checkIfOtherIsFriend(userid, otherid);
+  res.status(200).send({ status: "success", result: result });
+});
+
 export default {
   acceptRequest,
   rejectRequest,
   sendFriendRequest,
   getFriendsList,
   unFriendUser,
+  checkIfFriends,
 };
