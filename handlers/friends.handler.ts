@@ -8,6 +8,9 @@ import {
   getFriendByOtherId,
   deleteFriend,
   checkIfOtherIsFriend,
+  checkIfRequestExists,
+  getIncomingPendingRequests,
+  getOutgoingPendingRequests,
 } from "../models/friends.model";
 import ApiError from "../utils/ApiError";
 import catchAsync from "../utils/catchAsync";
@@ -74,6 +77,31 @@ const checkIfFriends = catchAsync(async (req, res) => {
   res.status(200).send({ status: "success", result: result });
 });
 
+const checkIfFriendRequest = catchAsync(async (req, res) => {
+  const userid = req.id;
+  const { otherId } = req.body;
+  if (!otherId) throw new ApiError(httpStatus.BAD_REQUEST, "Missing data");
+  const result = await checkIfRequestExists(userid, otherId);
+  if (!result)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Request doesn't exist");
+  res.status(200).send({ status: "success", result: result });
+});
+
+const getAllFriendRequests = catchAsync(async (req, res) => {
+  const userid = req.id;
+  const incoming = await getIncomingPendingRequests(userid);
+  incoming.forEach((element) => {
+    console.log(element.reciever_id);
+  });
+  const outgoing = await getOutgoingPendingRequests(userid);
+  outgoing.forEach((element) => {
+    console.log(element.reciever_id);
+  });
+  res
+    .status(200)
+    .send({ status: "success", incoming: incoming, outgoing: outgoing });
+});
+
 export default {
   acceptRequest,
   rejectRequest,
@@ -81,4 +109,6 @@ export default {
   getFriendsList,
   unFriendUser,
   checkIfFriends,
+  checkIfFriendRequest,
+  getAllFriendRequests,
 };

@@ -11,6 +11,7 @@ const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 
+//--------------------------------Images-------------------------------------
 router.get("/images/:key", (req: any, res) => {
   const { key } = req.params;
   console.log(key);
@@ -26,13 +27,15 @@ router.post("/images", upload.single("image"), async (req: any, res) => {
   console.log(fileData);
   res.status(httpStatus.OK).send({ key: fileData.key });
 });
-
+//---------------------------------------------------------------------------
+//--------------------------------User---------------------------------------
 router.get("/user/:id", userHandler.getUser);
 router.get("/user", checkAuth, userHandler.getCurrentUser);
 router.get("/user/account/verify/:userid", userHandler.verifyUser);
 router.post("/user/create", userHandler.createUser);
 router.post("/user/login", userHandler.loginUser);
-
+//---------------------------------------------------------------------------
+//--------------------------------Friends------------------------------------
 router.post("/user/friends/accept", checkAuth, friendsHandler.acceptRequest);
 router.post("/user/friends/reject", checkAuth, friendsHandler.rejectRequest);
 router.post(
@@ -40,10 +43,21 @@ router.post(
   checkAuth,
   friendsHandler.sendFriendRequest
 );
+router.post(
+  "/user/friends/check-request",
+  checkAuth,
+  friendsHandler.checkIfFriendRequest
+);
 router.post("/user/friends/check", checkAuth, friendsHandler.checkIfFriends);
 router.post("/user/friends/delete", checkAuth, friendsHandler.unFriendUser);
 router.get("/user/friends/all", checkAuth, friendsHandler.getFriendsList);
-
+router.get(
+  "/user/friends/all-requests",
+  checkAuth,
+  friendsHandler.getAllFriendRequests
+);
+//---------------------------------------------------------------------------
+//--------------------------------Room---------------------------------------
 router.post("/room/send", checkAuth, roomsHandler.postMessageToRoom);
 router.post(
   "/room/all-messages-by-other",
@@ -64,5 +78,6 @@ router.post(
 router.post("/room/check", checkAuth, roomsHandler.checkIfParticipantsOfRoom);
 router.post("/room/add", roomsHandler.addParticipantToRoom);
 router.post("/room", checkAuth, roomsHandler.getRoomInfo);
+//---------------------------------------------------------------------------
 
 export default router;

@@ -1,6 +1,6 @@
 import db from "../database/connection";
 
-export const getOutgoingPendingFriendRequests = (userId: number) => {
+export const getOutgoingPendingRequests = (userId: number) => {
   return db
     .query(`SELECT * FROM requests WHERE sender_id=$1 AND status='pending'`, [
       userId,
@@ -8,12 +8,25 @@ export const getOutgoingPendingFriendRequests = (userId: number) => {
     .then(({ rows }) => rows);
 };
 
-export const getIncomingPendingFriendRequests = (userId: number) => {
+export const getIncomingPendingRequests = (userId: number) => {
   return db
     .query(`SELECT * FROM requests WHERE reciever_id=$1 AND status='pending'`, [
       userId,
     ])
     .then(({ rows }) => rows);
+};
+
+export const checkIfRequestExists = (
+  //maybe add active to prevent spam of friend requests
+  userId: number,
+  otherId: number
+) => {
+  return db
+    .query(
+      `SELECT * FROM requests WHERE reciever_id = $1 AND sender_id = $2 AND status='pending' OR reciever_id = $2 AND sender_id = $1 AND status='pending'`,
+      [userId, otherId]
+    )
+    .then(({ rows }) => rows[0]);
 };
 
 export const getAllFriends = (userId: number) => {
