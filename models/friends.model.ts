@@ -114,3 +114,9 @@ export const isFriendRequestExists = (senderId: number, recieverId: number) => {
     )
     .then(({ rows }) => !!rows[0]);
 };
+
+export const getAllFriendsIds = (userId: number) => {
+  return db
+    .query(`SELECT userid_1 FROM friends WHERE userid_2=$1`, [userId])
+    .then(({ rows }) => rows);
+};

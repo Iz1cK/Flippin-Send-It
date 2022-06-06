@@ -27,7 +27,6 @@ CREATE TABLE requests (
     requestid SERIAL PRIMARY KEY,
     sender_id INTEGER REFERENCES users(userid),
     reciever_id INTEGER REFERENCES users(userid),
-    --status(accepted/pending/rejected)
     status varchar(16) DEFAULT 'pending',
     request_date DATE DEFAULT CURRENT_TIMESTAMP
 );
@@ -57,7 +56,8 @@ CREATE TABLE posts(
     post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_title varchar(55),
     post_content text,
-    likes INTEGER
+    likes INTEGER DEFAULT 0,
+    hidden boolean
 );
 
 CREATE TABLE comments(
@@ -82,7 +82,9 @@ INSERT INTO friends (userid_1,userid_2) VALUES
 (1,3),
 (3,1),
 (1,4),
-(4,1);
+(4,1),  
+(3,2),
+(2,3);
 
 INSERT INTO requests (sender_id,reciever_id) VALUES
 (1,3),
@@ -108,8 +110,10 @@ INSERT INTO messages (userid,roomid,message) VALUES
 (1,1,'Hello, my name is George, Its nice to meet you!'),
 (2,1,'Hello there George, My name is Mario, Pleasured to meet you!');
 
-INSERT INTO posts(postid,userid,post_title,post_content,likes) VALUES
-(1,1,'Mario sucks ass','Mario actuallly sucks big ass and i love him for that',69);
+INSERT INTO posts(postid,userid,post_title,post_content,likes,hidden) VALUES
+(1,1,'Mario sucks ass','Mario actuallly sucks big ass and i love him for that',69,false),
+(2,2,'Nur spells her name wrong!','Nur or should i say NOOR or even NOUR...',21,false),
+(3,1,'Julio speaks loud as hell','just speak with a lower decible value please',420,false);
 
 INSERT INTO comments(commentid,postid,userid,parentid,comment_content,likes) VALUES
 (1,1,2,null,'yea he does suck lol',21),

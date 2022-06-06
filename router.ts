@@ -3,6 +3,7 @@ import express from "express";
 import userHandler from "./handlers/users.handler";
 import friendsHandler from "./handlers/friends.handler";
 import roomsHandler from "./handlers/rooms.handler";
+import postsHandler from "./handlers/posts.handler";
 import checkAuth from "./middlewares/checkAuth";
 import { Request, Response } from "express";
 import multer from "multer";
@@ -79,5 +80,7 @@ router.post("/room/check", checkAuth, roomsHandler.checkIfParticipantsOfRoom);
 router.post("/room/add", roomsHandler.addParticipantToRoom);
 router.post("/room", checkAuth, roomsHandler.getRoomInfo);
 //---------------------------------------------------------------------------
+//------------------------------Posts---------------------------------
+router.post("/posts/get-all", postsHandler.getAllPosts);
 
 export default router;
