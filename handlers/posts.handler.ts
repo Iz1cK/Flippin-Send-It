@@ -20,11 +20,14 @@ const makePost = catchAsync(async (req, res) => {
 });
 
 const getAllPosts = catchAsync(async (req, res) => {
-  const userid = req.body.userid;
+  const userid = req.id;
+  const { amount } = req.body;
   const ids = await getAllFriendsIds(userid);
   let posts = [];
+  let count = 0;
   for (let i = 0; i < ids.length; i++) {
-    const userPosts = (await getAllPostsByUserId(ids[i].userid_1)).map(
+    if (count == amount) break;
+    (await getAllPostsByUserId(ids[i].userid_1)).map(
       (post: { post_title: string; post_content: string }) => {
         posts.push(post);
       }
