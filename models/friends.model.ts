@@ -16,6 +16,11 @@ export const getIncomingPendingRequests = (userId: number) => {
     .then(({ rows }) => rows);
 };
 
+/*
+SELECT * FROM users INNER JOIN requests rs ON rs.reciever_id = users.userid OR rs.sender_id = users.userid 
+WHERE rs.reciever_id = 1 AND rs.sender_id = 3 OR rs.reciever_id = 3 AND rs.sender_id = 1 AND status='pending'
+*/
+
 export const checkIfRequestExists = (
   //maybe add active to prevent spam of friend requests
   userId: number,
